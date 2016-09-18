@@ -3,6 +3,14 @@
  */
 public class ArraySorter {
 
+    /**
+     * This method is used to print a subset of an array of integers in one line
+     * @param array the array of integers to print
+     * @param lowerIndex  the lower inclusive index for the items to be printed
+     * @param upperIndex the upper inclusive index for the items to be printed
+     * @param highlightedItemIndex the item index which will be highlighted when printed
+     * @return void
+     */
     private void PrintArray(int[] array, int lowerIndex, int upperIndex, int highlightedItemIndex)
     {
         for (int i=lowerIndex;i<=upperIndex;i++)
@@ -16,17 +24,34 @@ public class ArraySorter {
         System.out.println();
     }
 
-
+    /**
+     * This method is used to print the whole array of integers in one line
+     * @param array the array of integers to print
+     * @param highlightedItemIndex the item index which will be highlighted when printed
+     * @return void
+     */
     private void PrintArray(int[] array, int highlightedItemIndex)
     {
         PrintArray(array, 0, array.length-1, highlightedItemIndex);
     }
 
+    /**
+     * This method is used to print the whole array of integers in one line without highlighting any of them
+     * @param array the array of integers to print
+     * @return void
+     */
     private void PrintArray(int[] array)
     {
         PrintArray(array, -1);
     }
 
+    /**
+     * This method is used to print the initial message for the sorting algorithms
+     * @param array the array of integers to sort
+     * @param sortingAlgorithmName the algorithm name which will be used for sorting
+     * @param descendingSort whether will be sorted by descending order
+     * @return void
+     */
     private void PrintInitialMessage(int[] array, String sortingAlgorithmName, boolean descendingSort)
     {
         String sortOrder = descendingSort ? "descending" : "ascending";
@@ -34,6 +59,11 @@ public class ArraySorter {
         PrintArray(array);
     }
 
+    /**
+     * This method is used to print the terminal message for the sorting algorithms
+     * @param array the array of integers to sort
+     * @return void
+     */
     private void PrintTerminalMessage(int[] array)
     {
         System.out.print("The final array after sorting is: ");
@@ -41,6 +71,13 @@ public class ArraySorter {
     }
 
 
+    /**
+     * This method is used to sort the array in place using the insertion sort algorithm
+     * @param array the array of integers to sort
+     * @param descendingSort whether will be sorted by descending order
+     * @param traceIntermediateResults whether intermediate results will be traced
+     * @return void
+     */
     public void SortByInsertionSort(int[] array, boolean descendingSort, boolean traceIntermediateResults)
     {
         if (traceIntermediateResults)
@@ -91,6 +128,13 @@ public class ArraySorter {
         }
     }
 
+    /**
+     * This method is used to sort the array in place using the selection sort algorithm
+     * @param array the array of integers to sort
+     * @param descendingSort whether will be sorted by descending order
+     * @param traceIntermediateResults whether intermediate results will be traced
+     * @return void
+     */
     public void SortBySelectionSort(int[] array, boolean descendingSort, boolean traceIntermediateResults)
     {
         if (traceIntermediateResults)
@@ -144,6 +188,13 @@ public class ArraySorter {
         }
     }
 
+    /**
+     * This method is used to sort the array in place using the bubble sort algorithm
+     * @param array the array of integers to sort
+     * @param descendingSort whether will be sorted by descending order
+     * @param traceIntermediateResults whether intermediate results will be traced
+     * @return void
+     */
     public void SortByBubbleSort(int[] array, boolean descendingSort, boolean traceIntermediateResults)
     {
         if (traceIntermediateResults)
@@ -215,6 +266,12 @@ public class ArraySorter {
         }
     }
 
+    /**
+     * This method is used to trace a message prepended with appropriate number of tabs
+     * @param message the message to trace
+     * @param level the number of tabs that will be prepended to the message
+     * @return void
+     */
     private void TraceWithLevel(String message, int level)
     {
         for (int i=1;i<=level;i++)
@@ -224,13 +281,28 @@ public class ArraySorter {
         System.out.print(message);
     }
 
+    /**
+     * This method is used to trace a message with a new line prepended with appropriate number of tabs
+     * @param message the message to trace
+     * @param level the number of tabs that will be prepended to the message
+     * @return void
+     */
     private void TraceLineWithLevel(String message, int level)
     {
         TraceWithLevel(message, level);
         System.out.println();
     }
 
-
+    /**
+     * This method is used to recursively sort the array in place using the merge sort algorithm
+     * @param array the array of integers to sort
+     * @param lowerIndex the lower inclusive index for items which will be sorted
+     * @param upperIndex the upper inclusive index for items which will be sorted
+     * @param descendingSort whether will be sorted by descending order
+     * @param tracingEnabled whether intermediate results will be traced
+     * @param level the level of the call of the merge sort (used to properly indent the output from merge sort)
+     * @return void
+     */
     private void MergeSort(int[] array, int lowerIndex, int upperIndex, boolean descendingSort, boolean tracingEnabled, int level)
     {
         if (lowerIndex < upperIndex)
@@ -317,7 +389,13 @@ public class ArraySorter {
         }
     }
 
-
+    /**
+     * The main merge sort method which will sort the array of integers in place
+     * @param array the array of integers to sort
+     * @param descendingSort whether will be sorted by descending order
+     * @param traceIntermediateResults whether intermediate results will be trace
+     * @return void
+     */
     public void SortByMergeSort(int[] array, boolean descendingSort, boolean traceIntermediateResults)
     {
         if (traceIntermediateResults)
@@ -332,6 +410,85 @@ public class ArraySorter {
             PrintTerminalMessage(array);
         }
     }
+
+    /**
+     * This method is used to recursively sort the array in place using the quick sort algorithm
+     * @param array the array of integers to sort
+     * @param lowerIndex the lower inclusive index for items which will be sorted
+     * @param upperIndex the upper inclusive index for items which will be sorted
+     * @param descendingSort whether will be sorted by descending order
+     * @param tracingEnabled whether intermediate results will be traced
+     * @param level the level of the call of the merge sort (used to properly indent the output from merge sort)
+     * @return void
+     */
+    private void QuickSort(int[] array, int lowerIndex, int upperIndex, boolean descendingSort, boolean tracingEnabled, int level)
+    {
+        if (lowerIndex < upperIndex)
+        {
+            if (tracingEnabled)
+            {
+                TraceWithLevel("Got the following array: ", level);
+                PrintArray(array, lowerIndex, upperIndex, -1);
+            }
+            int finalPivotIndex = lowerIndex - 1;
+            int pivot = array[upperIndex];
+            for (int i=lowerIndex;i<=upperIndex;i++)
+            {
+                boolean shouldSwap;
+                if (descendingSort)
+                {
+                    shouldSwap = array[i] >= pivot;
+                }
+                else
+                {
+                    shouldSwap = array[i] <= pivot;
+                }
+                if (shouldSwap)
+                {
+                    finalPivotIndex++;
+                    int temp = array[i];
+                    array[i] = array[finalPivotIndex];
+                    array[finalPivotIndex] = temp;
+                }
+            }
+            if (tracingEnabled)
+            {
+                TraceWithLevel("After partitioning the array: ", level);
+                PrintArray(array, lowerIndex, upperIndex, finalPivotIndex);
+            }
+
+            QuickSort(array, lowerIndex, finalPivotIndex-1, descendingSort, tracingEnabled, level+1);
+            QuickSort(array, finalPivotIndex+1, upperIndex, descendingSort, tracingEnabled, level+1);
+            if (tracingEnabled)
+            {
+                TraceWithLevel("After sorting the subarrays: ", level);
+                PrintArray(array, lowerIndex, upperIndex, finalPivotIndex);
+                System.out.println();
+            }
+        }
+    }
+
+    /**
+     * The main quick sort method which will sort the array of integers in place
+     * @param array the array of integers to sort
+     * @param descendingSort whether will be sorted by descending order
+     * @param traceIntermediateResults whether intermediate results will be trace
+     * @return void
+     */
+    public void SortByQuickSort(int[] array, boolean descendingSort, boolean traceIntermediateResults)
+    {
+        if (traceIntermediateResults) {
+            PrintInitialMessage(array, "quick", descendingSort);
+        }
+
+        QuickSort(array, 0, array.length-1, descendingSort, traceIntermediateResults, 0);
+
+        if (traceIntermediateResults)
+        {
+            PrintTerminalMessage(array);
+        }
+    }
+
 
 
 }
