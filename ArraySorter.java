@@ -138,4 +138,76 @@ public class ArraySorter {
         }
     }
 
+    public void SortByBubbleSort(int[] array, boolean descendingSort, boolean traceIntermediateResults)
+    {
+        if (traceIntermediateResults)
+        {
+            PrintInitialMessage(array, "bubble", descendingSort);
+        }
+        for (int i=1;i<=array.length-1;i++)
+        {
+            if (traceIntermediateResults)
+            {
+                System.out.println("Pass #" + i);
+            }
+            boolean anySwapOccurred = false;
+            for (int j=0;j<array.length-i;j++)
+            {
+                if (traceIntermediateResults)
+                {
+                    System.out.print("The current item in array: ");
+                    PrintArray(array, j);
+                }
+                boolean shouldSwap;
+                int current = array[j];
+                int next = array[j+1];
+
+                if (descendingSort)
+                {
+                    shouldSwap = current < next;
+                }
+                else
+                {
+                    shouldSwap = current > next;
+                }
+                if (shouldSwap)
+                {
+                    if (traceIntermediateResults)
+                    {
+                        System.out.println("Will be swapped with the next item");
+                    }
+                    anySwapOccurred = true;
+                    array[j] = next;
+                    array[j+1] = current;
+                    if (traceIntermediateResults)
+                    {
+                        System.out.print("After swapping: ");
+                        PrintArray(array, j+1);
+                    }
+                }
+                else
+                {
+                    if (traceIntermediateResults)
+                    {
+                        System.out.println("Will NOT be swapped with the next item");
+                    }
+                }
+            }
+            if (!anySwapOccurred)
+            {
+                if (traceIntermediateResults)
+                {
+                    System.out.println("No swap occurred. So the array is already sorted.");
+                }
+                break;
+            }
+            System.out.println();
+        }
+        if (traceIntermediateResults)
+        {
+            PrintTerminalMessage(array);
+        }
+    }
+
+
 }
