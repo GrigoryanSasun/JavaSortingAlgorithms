@@ -3,14 +3,9 @@
  */
 public class ArraySorter {
 
-    private void PrintArray(int[] array)
+    private void PrintArray(int[] array, int lowerIndex, int upperIndex, int highlightedItemIndex)
     {
-        PrintArray(array, -1);
-    }
-
-    private void PrintArray(int[] array, int highlightedItemIndex)
-    {
-        for (int i=0;i<array.length;i++)
+        for (int i=lowerIndex;i<=upperIndex;i++)
         {
             if (i == highlightedItemIndex)
             {
@@ -19,6 +14,17 @@ public class ArraySorter {
             System.out.print(array[i] + " ");
         }
         System.out.println();
+    }
+
+
+    private void PrintArray(int[] array, int highlightedItemIndex)
+    {
+        PrintArray(array, 0, array.length-1, highlightedItemIndex);
+    }
+
+    private void PrintArray(int[] array)
+    {
+        PrintArray(array, -1);
     }
 
     private void PrintInitialMessage(int[] array, String sortingAlgorithmName, boolean descendingSort)
@@ -203,6 +209,124 @@ public class ArraySorter {
             }
             System.out.println();
         }
+        if (traceIntermediateResults)
+        {
+            PrintTerminalMessage(array);
+        }
+    }
+
+    private void TraceWithLevel(String message, int level)
+    {
+        for (int i=1;i<=level;i++)
+        {
+            System.out.print("\t");
+        }
+        System.out.print(message);
+    }
+
+    private void TraceLineWithLevel(String message, int level)
+    {
+        TraceWithLevel(message, level);
+        System.out.println();
+    }
+
+
+    private void MergeSort(int[] array, int lowerIndex, int upperIndex, boolean descendingSort, boolean tracingEnabled, int level)
+    {
+        if (lowerIndex < upperIndex)
+        {
+            int middleIndex = (lowerIndex + upperIndex) / 2;
+            if (tracingEnabled)
+            {
+                TraceWithLevel("Got the following array: ", level);
+                PrintArray(array, lowerIndex, upperIndex, -1);
+                TraceLineWithLevel("Will divide into following two arrays:", level);
+                TraceWithLevel("Left array: ", level);
+                PrintArray(array, lowerIndex, middleIndex,-1);
+                TraceWithLevel("Right array: ", level);
+                PrintArray(array, middleIndex + 1, upperIndex,-1);
+            }
+            MergeSort(array, lowerIndex, middleIndex, descendingSort, tracingEnabled, level+1);
+            MergeSort(array, middleIndex + 1, upperIndex, descendingSort, tracingEnabled, level+1);
+
+            int[] leftArray = new int[middleIndex - lowerIndex + 2];
+            int[] rightArray = new int[upperIndex - middleIndex + 1];
+            int i;
+            for (i = lowerIndex; i <= middleIndex; i++)
+            {
+                leftArray[i - lowerIndex] = array[i];
+            }
+            leftArray[i - lowerIndex] = descendingSort ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+            for (i = middleIndex + 1; i <= upperIndex; i++)
+            {
+                rightArray[i - middleIndex - 1] = array[i];
+            }
+            rightArray[i - middleIndex - 1] = descendingSort ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
+            if (tracingEnabled)
+            {
+                TraceLineWithLevel("After being sorted:", level);
+                TraceWithLevel("Left array: ", level);
+                PrintArray(leftArray,0, leftArray.length-2, -1);
+                TraceWithLevel("Right array: ", level);
+                PrintArray(rightArray,0, rightArray.length-2,-1);
+            }
+
+            int leftIndex = 0;
+            int rightIndex = 0;
+            for (i = lowerIndex; i <= upperIndex; i++)
+            {
+                int currentLeftElement = leftArray[leftIndex];
+                int currentRightElement = rightArray[rightIndex];
+                int elementToSet;
+
+                if (currentLeftElement > currentRightElement)
+                {
+                    if (descendingSort)
+                    {
+                        elementToSet = currentLeftElement;
+                        leftIndex++;
+                    }
+                    else
+                    {
+                        elementToSet = currentRightElement;
+                        rightIndex++;
+                    }
+                }
+                else
+                {
+                    if (descendingSort)
+                    {
+                        elementToSet = currentRightElement;
+                        rightIndex++;
+                    }
+                    else
+                    {
+                        elementToSet = currentLeftElement;
+                        leftIndex++;
+                    }
+                }
+                array[i] = elementToSet;
+            }
+            if (tracingEnabled)
+            {
+                TraceWithLevel("After being merged: ", level);
+                PrintArray(array, lowerIndex, upperIndex, -1);
+                System.out.println();
+            }
+        }
+    }
+
+
+    public void SortByMergeSort(int[] array, boolean descendingSort, boolean traceIntermediateResults)
+    {
+        if (traceIntermediateResults)
+        {
+            PrintInitialMessage(array, "merge", descendingSort);
+        }
+
+        MergeSort(array, 0, array.length-1,descendingSort, traceIntermediateResults, 0);
+
         if (traceIntermediateResults)
         {
             PrintTerminalMessage(array);
